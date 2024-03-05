@@ -1,7 +1,9 @@
-$old_ip=$args[0]
-$new_ip=$args[1]
-
-
+param(
+	[string]$old_ip = '',
+	[string]$new_ip = ''
+)
+#$old_ip=$args[0]
+#$new_ip=$args[1]
 
 if (!$old_ip -Or !$new_ip) {
 	echo `n;
@@ -62,7 +64,8 @@ Write-Host "    - Adding a new Printer Port ($newport) with IP ($new_ip)" -foreg
 Write-Host "    - Applying new Printer Port ($newport) to Printer ($myprintername)" -foreground Green
 Write-Host "    - Removing old Printer Port ($pname)" -foreground Green
 echo `n
-[void](Read-Host 'Press Enter to make IP switch...')
+#[void](Read-Host 'Press Enter to make IP switch...')
+if (!$fromps) {[void](Read-Host 'Press Enter to make IP switch...')}
 
 
 Add-PrinterPort -Name $newport -PrinterHostAddress $new_ip
@@ -75,13 +78,13 @@ echo `n
 Write-Host "Modified $myprintername" -foreground Green
 echo `n
 
-[void](Read-Host 'Press Enter to print test page...')
- Invoke-CimMethod -MethodName printtestpage -InputObject (
-	 Get-CimInstance win32_printer -Filter "name LIKE '$myprintername'")
+#[void](Read-Host 'Press Enter to print test page...')
+# Invoke-CimMethod -MethodName printtestpage -InputObject (
+#	 Get-CimInstance win32_printer -Filter "name LIKE '$myprintername'")
 
-[void](Read-Host 'Press Enter to check print jobs...')
+#[void](Read-Host 'Press Enter to check print jobs...')
 
-Get-PrintJob -PrinterName $myprintername | Format-Table | Out-String|% {Write-Host -foreground Green $_}
+#Get-PrintJob -PrinterName $myprintername | Format-Table | Out-String|% {Write-Host -foreground Green $_}
 
 if (!$fromps) {[void](Read-Host 'Press Enter to close window');Exit} Else {Exit}
 
